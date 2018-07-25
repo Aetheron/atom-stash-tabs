@@ -1,1 +1,1 @@
-module.exports = require "./lib/stash-tabs"
+module.exports = require "./lib/workspace-stash"

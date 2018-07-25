@@ -3,15 +3,15 @@
     'label': 'Packages'
     'submenu': [
       {
-        'label': 'Stash Tabs'
+        'label': 'Workspace Stash'
         'submenu': [
           {
             'label': 'Stash'
-            'command': 'stash-tabs:stash'
+            'command': 'workspace:stash'
           },
           {
-            'label': 'Unstash'
-            'command': 'stash-tabs:unstash'
+            'label': 'Apply'
+            'command': 'workspace:apply'
           }
         ]
       }

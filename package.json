@@ -1,9 +1,9 @@
 {
-  "name": "stash-tabs",
-  "main": "./lib/stash-tabs",
+  "name": "workspace-stash",
+  "main": "./lib/workspace-stash",
   "version": "0.1.0",
-  "description": "A simple package to your open tabs so you can re-open them later",
-  "repository": "https://github.com/feens/atom-stash-tabs",
+  "description": "Stash your open tabs and apply them again later",
+  "repository": "https://github.com/Aetheron/workspace-stash",
   "license": "MIT",
   "engines": {
     "atom": ">0.138.0"
