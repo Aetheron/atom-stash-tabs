@@ -13,14 +13,16 @@ module.exports =
   stash: ->
     stashedFiles = []
     @activeFile = atom.workspace.paneContainer.activePane.getActiveItem().getPath()
+    stashTitles = []
     atom.workspace.getTextEditors().forEach (editor) ->
-      stashedFiles.push editor.getPath()
+      stashTitles.push(editor.getTitle())
+      stashedFiles.push(editor.getPath())
       atom.workspace.paneContainer.activePane.destroyItem(editor)
 
     @stashedFiles = stashedFiles
 
     i = @stashes.length
-    @stashes["stash#{i}"] = stashedFiles
+    @stashes["stash#{ i }"] = stashedFiles
     console.log @stashes
     
     menu = Menu.getApplicationMenu();
@@ -29,27 +31,19 @@ module.exports =
       if item.label == "Packages"
         submenu = item
     
+    stashTitle = stashTitles.join( ", " )
+    if stashTitle.length > 10
+      stashTitle.substr( 0, 20 )
+      stashTitle += "..."
     stashMenu = new MenuItem({
-        label: 'unstash #{i}',
+        label: "Unstash #{ stashTitle }",
     })
     
     for submenuItem in submenu.submenu.items
-      if submenuItem.label = "Stash Tabs Dev"
+      if submenuItem.label = "Workspace Stash"
         submenuItem.submenu.append(stashMenu)
     
     Menu.setApplicationMenu(menu);
-
-    # atom.contextMenu.add {
-    #     'Packages': [{
-    #         label: 'stash-tabs-dev',
-    #         submenu: [{
-    #             label: 'unstash',
-    #             submenu: [{label: "stash#{i}", command: => @unstash()}]
-    #         }]
-    #     }]
-    #atom-pane selector for adding items to the overlay
-    # }
-    # atom.commands.add 'atom-workspace', 'stash-tabs-dev:unstash:stash#{i}', => @unstash()
 
   apply: ->
     if @stashedFiles.length > 0
