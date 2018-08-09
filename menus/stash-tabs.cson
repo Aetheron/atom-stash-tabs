@@ -8,10 +8,6 @@
           {
             'label': 'Stash'
             'command': 'workspace:stash'
-          },
-          {
-            'label': 'Apply'
-            'command': 'workspace:apply'
           }
         ]
       }

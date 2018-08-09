@@ -8,7 +8,6 @@ module.exports =
 
   activate: (state) -> # ...
     atom.commands.add 'atom-workspace', 'workspace:stash', => @stash()
-    # atom.commands.add 'atom-workspace', 'workspace:apply', => @apply()
 
   stash: ->
     stashedFiles = []
@@ -37,6 +36,8 @@ module.exports =
       stashTitle += "..."
     stashMenu = new MenuItem({
         label: "Unstash #{ stashTitle }",
+        click: () => @unstash(),
+        id: "stash#{ i }"
     })
     
     for submenuItem in submenu.submenu.items
@@ -45,7 +46,7 @@ module.exports =
     
     Menu.setApplicationMenu(menu);
 
-  apply: ->
+  unstash: (item) ->
     if @stashedFiles.length > 0
       atom.workspace.paneContainer.activePane.destroyItems()
       activeFile = @activeFile
@@ -61,7 +62,21 @@ module.exports =
         activeEditor.then (editor) ->
           console.log 'active editor', editor
           atom.workspace.paneContainer.activePane.activateItem(editor)
+      else
+        atom.workspace.paneContainer.activePane.destroyItems()
+        activeFile = @activeFile
+        activeEditor = null
+        @stashedFiles.forEach (file) ->
+          editor = atom.workspace.open file, {activatePane: false}
 
+          if file == activeFile
+            activeEditor = editor
+
+        if activeEditor
+          console.log 'found an editor to activate', activeEditor
+          activeEditor.then (editor) ->
+            console.log 'active editor', editor
+            atom.workspace.paneContainer.activePane.activateItem(editor)
 
       @stashedFiles = []
       @activeFile = null
