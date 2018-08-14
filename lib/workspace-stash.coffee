@@ -2,7 +2,7 @@
 {Menu, MenuItem} = remote
 
 module.exports =
-  stashes: []
+  stashes: {}
   stashedFiles: []
   activeFile: null
 
@@ -20,7 +20,7 @@ module.exports =
 
     @stashedFiles = stashedFiles
 
-    i = @stashes.length
+    i = Object.keys(@stashes).length
     @stashes["stash#{ i }"] = stashedFiles
     console.log @stashes
     
@@ -31,12 +31,12 @@ module.exports =
         submenu = item
     
     stashTitle = stashTitles.join( ", " )
-    if stashTitle.length > 10
+    if stashTitle.length > 20
       stashTitle.substr( 0, 20 )
       stashTitle += "..."
     stashMenu = new MenuItem({
         label: "Unstash #{ stashTitle }",
-        click: () => @unstash(),
+        click: () => @unstash("stash#{ i }"),
         id: "stash#{ i }"
     })
     
@@ -47,11 +47,13 @@ module.exports =
     Menu.setApplicationMenu(menu);
 
   unstash: (item) ->
-    if @stashedFiles.length > 0
+    currentStash = @stashes[item]
+    delete @stashes[item]
+    if currentStash.length > 0
       atom.workspace.paneContainer.activePane.destroyItems()
       activeFile = @activeFile
       activeEditor = null
-      @stashedFiles.forEach (file) ->
+      currentStash.forEach (file) ->
         editor = atom.workspace.open file, {activatePane: false}
 
         if file == activeFile
@@ -66,7 +68,7 @@ module.exports =
         atom.workspace.paneContainer.activePane.destroyItems()
         activeFile = @activeFile
         activeEditor = null
-        @stashedFiles.forEach (file) ->
+        currentStash.forEach (file) ->
           editor = atom.workspace.open file, {activatePane: false}
 
           if file == activeFile
