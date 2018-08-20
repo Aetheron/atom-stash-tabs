@@ -72,7 +72,7 @@ module.exports =
     delete @stashes[item]
     @disposableMenuItems[item].dispose()
     
-    if currentStash.length > 0
+    if currentStash? && currentStash.length > 0
       atom.workspace.paneContainer.activePane.destroyItems()
       activeFile = @activeFile
       activeEditor = null
