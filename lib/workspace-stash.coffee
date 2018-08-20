@@ -5,6 +5,7 @@ module.exports =
   stashes: {}
   stashedFiles: []
   activeFile: null
+  disposableMenuItems: {}
 
   activate: (state) -> # ...
     atom.commands.add 'atom-workspace', 'workspace:stash', => @stash()
@@ -24,11 +25,11 @@ module.exports =
     @stashes["stash#{ i }"] = stashedFiles
     console.log @stashes
     
-    menu = Menu.getApplicationMenu();
-    submenu = [] 
-    for item in menu.items
-      if item.label == "Packages"
-        submenu = item
+    # menu = Menu.getApplicationMenu();
+    # submenu = [] 
+    # for item in menu.items
+    #   if item.label == "Packages"
+    #     submenu = item
     
     stashTitle = stashTitles.join( ", " )
     if stashTitle.length > 20
@@ -40,15 +41,37 @@ module.exports =
         id: "stash#{ i }"
     })
     
-    for submenuItem in submenu.submenu.items
-      if submenuItem.label = "Workspace Stash"
-        submenuItem.submenu.append(stashMenu)
+    # for submenuItem in submenu.submenu.items
+    #   if submenuItem.label = "Workspace Stash"
+    #     submenuItem.submenu.append(stashMenu)
+    # 
+    # Menu.setApplicationMenu(menu);
     
-    Menu.setApplicationMenu(menu);
+    disposable = atom.menu.add [
+        {
+            'label': 'Packages'
+            'submenu': [
+                {
+                    'label': 'Workspace Stash'
+                    'submenu': [
+                        {
+                            'label': "Unstash #{ stashTitle }",
+                            'command': "workspace:unstash#{ i }"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+    atom.commands.add 'atom-workspace', "workspace:unstash#{ i }", => @unstash("stash#{ i }")
+    @disposableMenuItems["stash#{ i }"] = disposable
 
   unstash: (item) ->
     currentStash = @stashes[item]
+    
     delete @stashes[item]
+    @disposableMenuItems[item].dispose()
+    
     if currentStash.length > 0
       atom.workspace.paneContainer.activePane.destroyItems()
       activeFile = @activeFile
