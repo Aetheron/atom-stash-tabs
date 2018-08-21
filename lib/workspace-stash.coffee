@@ -25,27 +25,17 @@ module.exports =
     @stashes["stash#{ i }"] = stashedFiles
     console.log @stashes
     
-    # menu = Menu.getApplicationMenu();
-    # submenu = [] 
-    # for item in menu.items
-    #   if item.label == "Packages"
-    #     submenu = item
-    
     stashTitle = stashTitles.join( ", " )
     if stashTitle.length > 20
-      stashTitle.substr( 0, 20 )
+      stashTitle = stashTitle.substr(0, 50)
+      if stashTitle[stashTitle.length - 1] == '.'
+        stashTitle = stashTitle.slice(0, -1)
       stashTitle += "..."
     stashMenu = new MenuItem({
         label: "Unstash #{ stashTitle }",
         click: () => @unstash("stash#{ i }"),
         id: "stash#{ i }"
     })
-    
-    # for submenuItem in submenu.submenu.items
-    #   if submenuItem.label = "Workspace Stash"
-    #     submenuItem.submenu.append(stashMenu)
-    # 
-    # Menu.setApplicationMenu(menu);
     
     disposable = atom.menu.add [
         {
