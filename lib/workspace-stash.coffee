@@ -23,7 +23,7 @@ module.exports =
 
     i = Math.random().toString(36).substr(2, 7)
     while @stashes["stash#{ i }"]?
-        i = Math.random().toString(36).substr(2, 5)
+        i = Math.random().toString(36).substr(2, 7)
     @stashes["stash#{ i }"] = stashedFiles
     console.log @stashes
     
