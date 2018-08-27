@@ -1,4 +1,4 @@
-This package adds support for multiple stashes to Trevor Feeney's `atom-stash-tabs`
+This package adds support for multiple sets of tab stashes to Trevor Feeney's `atom-stash-tabs`
 package.
 
 Original readme from feens/atom-stash-tabs
