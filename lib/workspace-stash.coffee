@@ -12,12 +12,12 @@ module.exports =
 
     stash: ->
         stashedFiles = []
-        @activeFile = atom.workspace.paneContainer.activePane.getActiveItem().getPath()
+        @activeFile = atom.workspace.getCenter().getActivePaneItem().getPath()
         stashTitles = []
         atom.workspace.getTextEditors().forEach (editor) ->
             stashTitles.push(editor.getTitle())
             stashedFiles.push(editor.getPath())
-            atom.workspace.paneContainer.activePane.destroyItem(editor)
+            atom.workspace.getCenter().getActivePane().destroyItem(editor)
 
         @stashedFiles = stashedFiles
 
@@ -65,7 +65,7 @@ module.exports =
         @disposableMenuItems[item].dispose()
         
         if currentStash? && currentStash.length > 0
-            atom.workspace.paneContainer.activePane.destroyItems()
+            atom.workspace.getCenter().getActivePane().destroyItems()
             activeFile = @activeFile
             activeEditor = null
             currentStash.forEach (file) ->
@@ -78,9 +78,9 @@ module.exports =
                 console.log 'found an editor to activate', activeEditor
                 activeEditor.then (editor) ->
                     console.log 'active editor', editor
-                    atom.workspace.paneContainer.activePane.activateItem(editor)
+                    atom.workspace.getCenter().getActivePane().activateItem(editor)
             else
-                atom.workspace.paneContainer.activePane.destroyItems()
+                atom.workspace.getCenter().getActivePane().destroyItems()
                 activeFile = @activeFile
                 activeEditor = null
                 currentStash.forEach (file) ->
@@ -93,7 +93,7 @@ module.exports =
                     console.log 'found an editor to activate', activeEditor
                     activeEditor.then (editor) ->
                         console.log 'active editor', editor
-                        atom.workspace.paneContainer.activePane.activateItem(editor)
+                        atom.workspace.getCenter().getActivePane().activateItem(editor)
 
             @stashedFiles = []
             @activeFile = null
