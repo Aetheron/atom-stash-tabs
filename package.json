@@ -6,7 +6,7 @@
   "repository": "https://github.com/Aetheron/workspace-stash",
   "license": "MIT",
   "engines": {
-    "atom": ">0.138.0"
+    "atom": ">=1.30.0"
   },
   "dependencies": {}
 }
