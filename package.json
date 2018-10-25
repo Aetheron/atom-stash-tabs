@@ -1,7 +1,7 @@
 {
   "name": "workspace-stash",
   "main": "./lib/workspace-stash",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Stash your open tabs and apply them again later",
   "repository": "https://github.com/Aetheron/workspace-stash",
   "license": "MIT",
